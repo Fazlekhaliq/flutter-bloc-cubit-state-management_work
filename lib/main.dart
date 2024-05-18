@@ -1,4 +1,7 @@
+import 'package:blocwork/cubits/login_cubit/login_cubit.dart';
 import 'package:blocwork/cubits/movies_cubit/movies_cubit.dart';
+import 'package:blocwork/cubits/task_cubit/task_cubit.dart';
+import 'package:blocwork/screens/check_box.dart';
 import 'package:blocwork/screens/login_screen.dart';
 import 'package:blocwork/screens/moveis_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) =>  MoviesCubit( )),
+        BlocProvider(create: (context) =>  TaskCubit( )),
+        BlocProvider(create: (context) => LoginCubit( )),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -23,7 +28,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:MoviesScreen(),
+        home:LoginScreen(),
       ),
     );
   }

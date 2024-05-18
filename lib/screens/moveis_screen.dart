@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubits/movies_cubit/movies_cubit.dart';
@@ -30,37 +31,37 @@ class _MoviesScreenState extends State<MoviesScreen> {
       body: Column(
         children: [
         Expanded(
-          flex: 3,
-            child:   BlocBuilder<MoviesCubit, MoviesState>(
-          builder: (context, state){
-            if(state is MoviesLoading){
+          child: BlocBuilder<MoviesCubit, MoviesState>(
+                    builder: (context, state){
+          if(state is MoviesLoading){
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is MoviesSuccessfully){
+            final movies = state.moviesList;
+            return ListView.builder(
+              itemCount:  movies!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading:  Icon(Icons.movie_sharp,color: Colors.blue,),
+                  title: Text(movies[index].originalLanguage!),
+                  subtitle: Text(movies[index].overview!),
+                  trailing: Text(movies[index].releaseDate!),
+                );
+              },);
+          }
+              if (state is MoviesFailure) {
               return const Center(
-                child: CircularProgressIndicator(),
+              child: Text('No internet connection'),
               );
-            }
-            if (state is MoviesSuccessfully){
-              final movies = state.moviesList;
-              return ListView.builder(
-                itemCount:  movies!.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading:  Icon(Icons.movie_sharp,color: Colors.blue,),
-                    title: Text(movies[index].title!),
-                    subtitle: Text(movies[index].overview!),
-                    trailing: Text(movies[index].releaseDate!),
-                  );
-                },);
-            }
-    if (state is MoviesFailure) {
-    return const Center(
-    child: Text('An Error Occurred'),
-    );
-    }
-    return Container();
-    },
-
-
-        ))
+              }
+              return Container();
+              },
+          
+          
+                  ),
+        )
 
         ],
       ),
